@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: pizzeria
+    ports:
+      - 3307:3306
+    volumes:
+      - db-data:/var/lib/mysql
+  api:
+    build: .
+    depends_on:
+      - db
+      - redis
+    ports:
+      - 5001:5000
+  redis:
+    image: redis:6.2
+    ports:
+      - 6379:6379
+volumes:
+  db-data:
